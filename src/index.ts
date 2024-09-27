@@ -56,15 +56,6 @@ app.get("/check", isAuthenticated, (req, res) => {
   res.status(200).json({ message: "checked" });
 });
 
-// model Task {
-//   id          String    @id @default(auto()) @map("_id") @db.ObjectId
-//   title       String
-//   description String?
-//   status      String
-//   priority    String
-//   dueDate     DateTime?
-// }
-
 app.listen(8080, () => {
   console.log("server is running on port 8080");
 });
