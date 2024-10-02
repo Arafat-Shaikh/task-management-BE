@@ -11,7 +11,7 @@ export const isAuthenticated = (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
+): any => {
   try {
     const token = req.cookies.token;
     if (!token) {

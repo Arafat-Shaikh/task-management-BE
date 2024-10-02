@@ -5,65 +5,75 @@ import { isAuthenticated } from "../service/middleware";
 
 const router = Router();
 
-router.post("/", isAuthenticated, async (req: Request, res: Response) => {
-  const { success, error } = taskSchema.safeParse(req.body);
-  const id = req.userId;
+router.post(
+  "/",
+  isAuthenticated,
+  async (req: Request, res: Response): Promise<any> => {
+    const { success, error } = taskSchema.safeParse(req.body);
+    const id = req.userId;
 
-  if (!success) {
-    console.log(error.message);
-    return res.status(403).json({ message: "Invalid input" });
+    if (!success) {
+      console.log(error.message);
+      return res.status(403).json({ message: "Invalid input" });
+    }
+
+    let date = new Date(req.body.dueDate.toString());
+
+    try {
+      const task = await prisma.task.create({
+        data: {
+          userId: id,
+          title: req.body.title,
+          description: req.body.description,
+          status: req.body.status,
+          priority: req.body.priority,
+          dueDate: date,
+        },
+      });
+      res.status(200).json(task);
+    } catch (error) {
+      console.log(error);
+      res
+        .status(500)
+        .json({ message: "Please try again, Something went wrong" });
+    }
   }
+);
 
-  let date = new Date(req.body.dueDate.toString());
+router.put(
+  "/:id",
+  isAuthenticated,
+  async (req: Request, res: Response): Promise<any> => {
+    const { id } = req.params;
+    let reqTask = req.body;
 
-  try {
-    const task = await prisma.task.create({
-      data: {
-        userId: id,
-        title: req.body.title,
-        description: req.body.description,
-        status: req.body.status,
-        priority: req.body.priority,
-        dueDate: date,
-      },
-    });
-    res.status(200).json(task);
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "Please try again, Something went wrong" });
+    if (reqTask.id) {
+      delete reqTask.id;
+    }
+
+    try {
+      const updatedTask = await prisma.task.update({
+        where: {
+          id: id.toString(),
+        },
+        data: reqTask,
+        select: {
+          id: true,
+          title: true,
+          description: true,
+          status: true,
+          priority: true,
+          dueDate: true,
+        },
+      });
+
+      return res.status(200).json(updatedTask);
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: "could not found the task" });
+    }
   }
-});
-
-router.put("/:id", isAuthenticated, async (req: Request, res: Response) => {
-  const { id } = req.params;
-  let reqTask = req.body;
-
-  if (reqTask.id) {
-    delete reqTask.id;
-  }
-
-  try {
-    const updatedTask = await prisma.task.update({
-      where: {
-        id: id.toString(),
-      },
-      data: reqTask,
-      select: {
-        id: true,
-        title: true,
-        description: true,
-        status: true,
-        priority: true,
-        dueDate: true,
-      },
-    });
-
-    return res.status(200).json(updatedTask);
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "could not found the task" });
-  }
-});
+);
 
 router.delete("/:id", isAuthenticated, async (req: Request, res: Response) => {
   const { id } = req.params;

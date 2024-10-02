@@ -17,7 +17,6 @@ declare global {
   }
 }
 const port = process.env.PORT || 3000;
-const url = process.env.ORIGIN_URL || "http://localhost:3000";
 const app = express();
 
 app.use(cookieParser());
@@ -25,30 +24,33 @@ app.use(express.json());
 app.use(
   cors({
     credentials: true,
-    origin: url,
+    origin: "http://localhost:3000",
   })
 );
 
 app.use("/api/user", userRoutes);
 app.use("/api/task", taskRoutes);
 
-app.get("/api/v1/user/me", async (req: Request, res: Response) => {
-  const id = req.userId;
+app.get(
+  "/api/v1/user/me",
+  async (req: Request, res: Response): Promise<any> => {
+    const id = req.userId;
 
-  try {
-    const user = await prisma.user.findUnique({
-      where: {
-        id,
-      },
-    });
+    try {
+      const user = await prisma.user.findUnique({
+        where: {
+          id,
+        },
+      });
 
-    return res.status(200).json(user);
-  } catch (error) {
-    res.status(404).json({
-      message: "can't find user",
-    });
+      return res.status(200).json(user);
+    } catch (error) {
+      res.status(404).json({
+        message: "can't find user",
+      });
+    }
   }
-});
+);
 
 app.get("/check", isAuthenticated, (req: Request, res: Response) => {
   res.status(200).json({ message: "checked" });

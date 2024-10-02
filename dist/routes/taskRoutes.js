@@ -40,7 +40,9 @@ router.post("/", middleware_1.isAuthenticated, (req, res) => __awaiter(void 0, v
     }
     catch (error) {
         console.log(error);
-        res.status(500).json({ message: "Please try again, Something went wrong" });
+        res
+            .status(500)
+            .json({ message: "Please try again, Something went wrong" });
     }
 }));
 router.put("/:id", middleware_1.isAuthenticated, (req, res) => __awaiter(void 0, void 0, void 0, function* () {

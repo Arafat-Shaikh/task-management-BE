@@ -9,7 +9,7 @@ const JWT_SECRET = process.env.JWT_SECRET_KEY as string;
 
 const router = Router();
 
-router.post("/signup", async (req: Request, res: Response) => {
+router.post("/signup", async (req: Request, res: Response): Promise<any> => {
   try {
     const { success, error } = signupSchema.safeParse(req.body);
 
@@ -56,7 +56,7 @@ router.post("/signup", async (req: Request, res: Response) => {
   }
 });
 
-router.post("/signin", async (req: Request, res: Response) => {
+router.post("/signin", async (req: Request, res: Response): Promise<any> => {
   try {
     const { success, error } = signinSchema.safeParse(req.body);
 
