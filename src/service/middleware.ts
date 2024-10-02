@@ -14,7 +14,6 @@ export const isAuthenticated = (
 ) => {
   try {
     const token = req.cookies.token;
-
     if (!token) {
       return res.status(401).json({ message: "Unauthorized" });
     }
@@ -26,8 +25,6 @@ export const isAuthenticated = (
     }
 
     req.userId = decodedToken.id;
-
-    console.log("above is the middleware");
 
     next();
   } catch (error) {

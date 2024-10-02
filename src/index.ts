@@ -1,11 +1,8 @@
-import express, { NextFunction, Request, Response } from "express";
+import express, { Request, Response } from "express";
 import prisma from "./lib/prisma";
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import cors from "cors";
-import { signinSchema, signupSchema, taskSchema } from "./service/types";
 import { isAuthenticated } from "./service/middleware";
 import userRoutes from "./routes/userRoutes";
 import taskRoutes from "./routes/taskRoutes";
@@ -19,7 +16,7 @@ declare global {
     }
   }
 }
-
+const port = process.env.PORT || 3000;
 const app = express();
 
 app.use(cookieParser());
@@ -34,7 +31,7 @@ app.use(
 app.use("/api/user", userRoutes);
 app.use("/api/task", taskRoutes);
 
-app.get("/api/v1/user/me", async (req, res) => {
+app.get("/api/v1/user/me", async (req: Request, res: Response) => {
   const id = req.userId;
 
   try {
@@ -52,10 +49,10 @@ app.get("/api/v1/user/me", async (req, res) => {
   }
 });
 
-app.get("/check", isAuthenticated, (req, res) => {
+app.get("/check", isAuthenticated, (req: Request, res: Response) => {
   res.status(200).json({ message: "checked" });
 });
 
-app.listen(8080, () => {
-  console.log("server is running on port 8080");
+app.listen(port, () => {
+  console.log("server is running on port " + port);
 });

@@ -1,0 +1,1 @@
+{"root":["./src/index.ts","./src/lib/prisma.ts","./src/routes/taskroutes.ts","./src/routes/userroutes.ts","./src/service/middleware.ts","./src/service/types.ts"],"version":"5.6.2"}

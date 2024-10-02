@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Request, Response, Router } from "express";
 import prisma from "../lib/prisma";
 import { signinSchema, signupSchema } from "../service/types";
 import bcrypt from "bcrypt";
@@ -9,7 +9,7 @@ const JWT_SECRET = process.env.JWT_SECRET_KEY as string;
 
 const router = Router();
 
-router.post("/signup", async (req, res) => {
+router.post("/signup", async (req: Request, res: Response) => {
   try {
     const { success, error } = signupSchema.safeParse(req.body);
 
@@ -56,7 +56,7 @@ router.post("/signup", async (req, res) => {
   }
 });
 
-router.post("/signin", async (req, res) => {
+router.post("/signin", async (req: Request, res: Response) => {
   try {
     const { success, error } = signinSchema.safeParse(req.body);
 
@@ -102,8 +102,9 @@ router.post("/signin", async (req, res) => {
   }
 });
 
-router.post("/logout", isAuthenticated, (req, res) => {
+router.post("/logout", isAuthenticated, (req: Request, res: Response) => {
   res.clearCookie("token");
+  console.log("token");
   res.status(200).json({ message: "Logged out successfully" });
 });
 
