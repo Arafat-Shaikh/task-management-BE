@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "tsc -b && node dist/index",
     "stage": "tsc && git status && git add ."
@@ -15,8 +16,10 @@
     "@types/bcrypt": "^5.0.2",
     "@types/cookie-parser": "^1.4.7",
     "@types/cors": "^2.8.17",
+    "@types/dotenv": "^8.2.0",
     "@types/express": "^5.0.0",
     "@types/jsonwebtoken": "^9.0.7",
+    "@types/node": "^22.7.4",
     "express": "^4.21.0",
     "prisma": "^5.20.0",
     "ts-node": "^10.9.2",

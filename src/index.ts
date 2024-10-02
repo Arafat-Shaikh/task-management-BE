@@ -31,26 +31,9 @@ app.use(
 app.use("/api/user", userRoutes);
 app.use("/api/task", taskRoutes);
 
-app.get(
-  "/api/v1/user/me",
-  async (req: Request, res: Response): Promise<any> => {
-    const id = req.userId;
-
-    try {
-      const user = await prisma.user.findUnique({
-        where: {
-          id,
-        },
-      });
-
-      return res.status(200).json(user);
-    } catch (error) {
-      res.status(404).json({
-        message: "can't find user",
-      });
-    }
-  }
-);
+app.get("/example", (req: Request, res: Response) => {
+  res.status(200).json({ success: "Successful" });
+});
 
 app.get("/check", isAuthenticated, (req: Request, res: Response) => {
   res.status(200).json({ message: "checked" });
