@@ -1,5 +1,8 @@
+import dotenv from "dotenv";
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
+
+dotenv.config();
 
 interface JWT_PAYLOAD {
   id: string;
@@ -28,6 +31,7 @@ export const isAuthenticated = (
 
     next();
   } catch (error) {
-    return res.status(401).json({ message: "Unauthorized" });
+    console.log(error);
+    return res.status(500).json({ message: "Bad request" });
   }
 };
