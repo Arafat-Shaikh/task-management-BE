@@ -12,11 +12,11 @@ dotenv.config();
 declare global {
   namespace Express {
     interface Request {
-      userId: string;
+      userId?: string;
     }
   }
 }
-const port = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 const url = process.env.ORIGIN_URL || "http://localhost:3000";
 const app = express();
 
@@ -40,6 +40,6 @@ app.get("/check", isAuthenticated, (req: Request, res: Response) => {
   res.status(200).json({ message: "checked" });
 });
 
-app.listen(port, () => {
-  console.log("server is running on port " + port);
+app.listen(PORT, () => {
+  console.log("server is running on port " + PORT);
 });
