@@ -52,6 +52,7 @@ router.post("/signup", (req, res) => __awaiter(void 0, void 0, void 0, function*
         res.cookie("token", token, {
             maxAge: 5 * 24 * 60 * 60 * 1000,
             sameSite: "none",
+            secure: true,
         });
         res.status(200).json({ userId: user.id });
     }
@@ -89,6 +90,7 @@ router.post("/signin", (req, res) => __awaiter(void 0, void 0, void 0, function*
         res.cookie("token", token, {
             maxAge: 5 * 24 * 60 * 60 * 1000,
             sameSite: "none",
+            secure: true,
         });
         res.status(200).json({ userId: user.id });
     }
